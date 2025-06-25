@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Combos</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Combos</h2>
+    <button class="btn" onclick="addItem('X-Tudo + Refri')">X-Tudo + Refri</button>
+    <button class="btn" onclick="addItem('Batata Bacon Cheddar')">Batata Bacon Cheddar</button>
+    <button class="btn" onclick="addItem('Macaxeira c/ Carne do Sol')">Macaxeira c/ Carne do Sol</button>
+    <a class="btn" href="categorias.html">⬅ Voltar</a>
+  </div>
+  <script>
+    function addItem(item) {
+      const pedido = JSON.parse(localStorage.getItem("pedidoAtual") || "[]");
+      pedido.push(item);
+      localStorage.setItem("pedidoAtual", JSON.stringify(pedido));
+      alert(item + " adicionado!");
+    }
+  </script>
+</body>
+</html>

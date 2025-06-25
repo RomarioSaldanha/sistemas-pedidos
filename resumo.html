@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resumo do Pedido</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Resumo do Pedido</h2>
+    <div id="mesaDisplay"></div>
+    <div id="obsDisplay"></div>
+    <ul id="resumoPedido"></ul>
+    <p id="horaPedido"></p>
+    <button class="btn" onclick="window.print()">🖨️ Imprimir</button>
+    <a class="btn" href="index.html">Novo Pedido</a>
+  </div>
+  <script>
+    const pedido = JSON.parse(localStorage.getItem("ultimoPedido"));
+    const lista = document.getElementById("resumoPedido");
+    const hora = document.getElementById("horaPedido");
+    const mesaDisplay = document.getElementById("mesaDisplay");
+    const obsDisplay = document.getElementById("obsDisplay");
+
+    if (pedido) {
+      mesaDisplay.textContent = "Mesa: " + pedido.mesa;
+      if (pedido.observacao && pedido.observacao.trim() !== "") {
+        obsDisplay.textContent = "Observação: " + pedido.observacao;
+      }
+      pedido.itens.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        lista.appendChild(li);
+      });
+      hora.textContent = "Hora do pedido: " + pedido.hora;
+    } else {
+      lista.innerHTML = "<li>Nenhum pedido encontrado.</li>";
+    }
+  </script>
+</body>
+</html>

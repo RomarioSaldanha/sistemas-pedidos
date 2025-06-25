@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pedido</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Seu Pedido</h2>
+
+    <label for="mesa">Número da Mesa:</label>
+    <input type="number" id="mesa" min="1" max="50" required />
+
+    <label for="observacao">Observação (opcional):</label>
+    <textarea id="observacao" rows="3" placeholder="Ex: Cliente pediu sem cebola, talheres extras, etc."></textarea>
+
+    <ul id="listaPedido"></ul>
+    <p id="totalItens"></p>
+
+    <button class="btn" onclick="finalizar()">✅ Finalizar Pedido</button>
+    <a class="btn" href="categorias.html">⬅ Voltar</a>
+  </div>
+
+  <script>
+    const lista = document.getElementById("listaPedido");
+    const totalItens = document.getElementById("totalItens");
+    const pedido = JSON.parse(localStorage.getItem("pedidoAtual") || "[]");
+
+    function atualizarLista() {
+      lista.innerHTML = "";
+      pedido.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = item + ' <button onclick="removerItem(' + index + ')">🗑️</button>';
+        lista.appendChild(li);
+      });
+      totalItens.textContent = "Total de itens: " + pedido.length;
+    }
+
+    function removerItem(index) {
+      pedido.splice(index, 1);
+      localStorage.setItem("pedidoAtual", JSON.stringify(pedido));
+      atualizarLista();
+    }
+
+    function finalizar() {
+      const mesa = document.getElementById('mesa').value;
+      const observacao = document.getElementById('observacao').value;
+
+      if (!mesa) {
+        alert("Por favor, insira o número da mesa.");
+        return;
+      }
+
+      if (pedido.length === 0) {
+        alert("Você não adicionou nenhum item ao pedido.");
+        return;
+      }
+
+      let numero = parseInt(localStorage.getItem("numeroPedido") || "0") + 1;
+      localStorage.setItem("numeroPedido", numero);
+
+      const resumo = {
+        numero: numero,
+        mesa: mesa,
+        observacao: observacao,
+        itens: pedido,
+        hora: new Date().toLocaleTimeString()
+      };
+
+      const historico = JSON.parse(localStorage.getItem("historicoPedidos") || "[]");
+      historico.push(resumo);
+      localStorage.setItem("historicoPedidos", JSON.stringify(historico));
+
+      localStorage.setItem('ultimoPedido', JSON.stringify(resumo));
+      localStorage.removeItem('pedidoAtual');
+      alert("Pedido #" + numero + " finalizado com sucesso!");
+      window.location.href = "resumo.html";
+    }
+
+    atualizarLista();
+  </script>
+</body>
+</html>

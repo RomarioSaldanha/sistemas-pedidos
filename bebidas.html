@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bebidas</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Bebidas</h2>
+    <button class="btn" onclick="addItem('Refrigerante Lata')">Refrigerante Lata</button>
+    <button class="btn" onclick="addItem('Suco Natural')">Suco Natural</button>
+    <a class="btn" href="categorias.html">⬅ Voltar</a>
+  </div>
+  <script>
+    function addItem(item) {
+      const pedido = JSON.parse(localStorage.getItem("pedidoAtual") || "[]");
+      pedido.push(item);
+      localStorage.setItem("pedidoAtual", JSON.stringify(pedido));
+      alert(item + " adicionado!");
+    }
+  </script>
+</body>
+</html>

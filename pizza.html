@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pizzas</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Montar Pizza</h2>
+    <select id="tamanho">
+      <option value="">Tamanho</option>
+      <option value="P">Pequena</option>
+      <option value="M">Média</option>
+      <option value="G">Grande</option>
+    </select>
+    <input type="text" id="sabor1" placeholder="Sabor 1" />
+    <input type="text" id="sabor2" placeholder="Sabor 2 (opcional)" />
+    <input type="text" id="borda" placeholder="Borda (opcional)" />
+    <input type="text" id="obs" placeholder="Observações (opcional)" />
+    <button class="btn" onclick="adicionarPizza()">🍕 Adicionar Pizza</button>
+    <a class="btn" href="categorias.html">⬅ Voltar</a>
+  </div>
+  <script>
+    function adicionarPizza() {
+      const tamanho = document.getElementById("tamanho").value;
+      const sabor1 = document.getElementById("sabor1").value.trim();
+      const sabor2 = document.getElementById("sabor2").value.trim();
+      const borda = document.getElementById("borda").value.trim();
+      const obs = document.getElementById("obs").value.trim();
+
+      if (!tamanho || !sabor1) {
+        alert("Preencha pelo menos o tamanho e o sabor 1.");
+        return;
+      }
+
+      let descricao = "Pizza " + tamanho + ": " + sabor1;
+      if (sabor2) descricao += " / " + sabor2;
+      if (borda) descricao += " (Borda: " + borda + ")";
+      if (obs) descricao += " [Obs: " + obs + "]";
+
+      const pedido = JSON.parse(localStorage.getItem("pedidoAtual") || "[]");
+      pedido.push(descricao);
+      localStorage.setItem("pedidoAtual", JSON.stringify(pedido));
+      alert("Pizza adicionada!");
+
+      document.getElementById("tamanho").value = "";
+      document.getElementById("sabor1").value = "";
+      document.getElementById("sabor2").value = "";
+      document.getElementById("borda").value = "";
+      document.getElementById("obs").value = "";
+    }
+  </script>
+</body>
+</html>
